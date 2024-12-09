@@ -42,7 +42,10 @@ def generate_qr():
     # Return success message with path info
     return f"QR code generated and saved as 'generated_qr.png' in {os.getcwd()}"
 
-
+@app.route('/qr_code')
+def serve_qr_code():
+    return send_from_directory(os.getcwd(), "generated_qr.png") 
+    
 @app.route('/submit_attendance', methods=['POST'])
 def submit_attendance():
     if request.method == 'POST':
