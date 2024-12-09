@@ -63,4 +63,6 @@ def attendance_success():
     return render_template('success.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    port = int(os.environ.get('PORT', 5000))  # Get the PORT from environment or default to 5000
+    app.run(host='0.0.0.0', port=port, debug=True)  # Bind to 0.0.0.0 to allow external access
