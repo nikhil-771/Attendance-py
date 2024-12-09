@@ -31,7 +31,7 @@ def home():
 
 @app.route('/generate_qr')
 def generate_qr():
-    data = "https://attendance-py.onrender.com/"  # Replace with the data you want to encode
+    data = "https://attendance-py.onrender.com/"  # Data to encode in the QR code
     img = qrcode.make(data)  # Generate the QR code
 
     # Save the QR code image to the same directory as app.py
@@ -39,12 +39,19 @@ def generate_qr():
     img.save(qr_file_path)  # Save the image to disk
     print(f"QR code saved at: {qr_file_path}")
 
-    # Return success message with path info
-    return f"QR code generated and saved as 'generated_qr.png' in {os.getcwd()}"
+    return redirect(url_for('serve_qr_code'))  # Redirect to serve the QR code
 
 @app.route('/qr_code')
 def serve_qr_code():
+    # Send the QR code from the correct directory
     return send_from_directory(os.getcwd(), "generated_qr.png") 
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    # Return files like attendance.xlsx from the working directory
+    directory = os.getcwd()  # Current working directory
+    return send_from_directory(directory, filename, as_attachment=True)
+
     
 @app.route('/submit_attendance', methods=['POST'])
 def submit_attendance():
@@ -64,12 +71,6 @@ def submit_attendance():
         print(f"Attendance for {student_id} saved.")
 
         return redirect(url_for('attendance_success'))
-
-@app.route('/download/<filename>')
-def download_file(filename):
-    # Sends the file from the working directory
-    directory = os.getcwd()  # Current working directory
-    return send_from_directory(directory, filename, as_attachment=True)
 
 
 @app.route('/attendance_success')
