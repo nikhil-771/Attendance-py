@@ -1,9 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file, send_from_directory
+
 import openpyxl
 import os
 from datetime import datetime
 import qrcode  # Import qrcode for QR code generation
 from io import BytesIO  # Import BytesIO for in-memory image handling
+
+
+
 
 # Define the Flask app instance
 app = Flask(__name__)
@@ -57,6 +61,13 @@ def submit_attendance():
         print(f"Attendance for {student_id} saved.")
 
         return redirect(url_for('attendance_success'))
+
+@app.route('/download/<filename>')
+def download_file(filename):
+    # Sends the file from the working directory
+    directory = os.getcwd()  # Current working directory
+    return send_from_directory(directory, filename, as_attachment=True)
+
 
 @app.route('/attendance_success')
 def attendance_success():
