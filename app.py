@@ -31,7 +31,7 @@ def home():
 
 @app.route('/generate_qr')
 def generate_qr():
-    data = "http://127.0.0.1:5000/"  # Replace with the data you want to encode
+    data = "https://attendance-py.onrender.com/"  # Replace with the data you want to encode
     img = qrcode.make(data)  # Generate the QR code
 
     # Save the QR code image to the same directory as app.py
